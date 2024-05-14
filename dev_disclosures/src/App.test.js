@@ -26,5 +26,8 @@ describe('App component', () => {
     expect(screen.getByText(/The bundling of data with the mechanisms or methods/i)).toBeInTheDocument();
     const learnMoreLink = screen.getByText(/Learn More/i);
     expect(learnMoreLink).toBeInTheDocument();
+    expect(screen.getByText(/Learn More/i)).toHaveAttribute('href', 'https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)#An_information-hiding_mechanism');
+    expect(screen.getByText(/Learn More/i)).toHaveAttribute('target', '_blank');
+    
   });
 });
