@@ -1,3 +1,29 @@
+# DevDisclosures
+
+## Description
+
+"DevDisclosures" suggests a platform where developers can openly share their insights, discoveries, and experiences in the world of software development. It's a place for disclosure of knowledge, tips, and lessons learned throughout one's career journey. The word "disclosures" implies a transparency and openness in sharing information, fostering a collaborative environment where developers can learn from each other's successes and challenges.
+
+## Features
+
+// TO DO
+
+## Usage
+
+// TO DO
+
+## Installation
+
+CrochetCalculator is a web-based tool, so no installation is required. Simply visit the website at **application still in development stage.
+
+## Contributing
+
+If you'd like to contribute to DevDisclosures, feel free to fork the repository and submit a pull request with your proposed changes. Contributions such as bug fixes, feature enhancements, and documentation improvements are welcome.
+
+## Acknowledgements
+
+- Katelin Vincent - Creator of DevDisclosures
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
