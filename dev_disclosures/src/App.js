@@ -1,24 +1,52 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import React, { useState } from 'react';
 
-function Post() {
+function Post({ postHeader, postTitle, postBody, postLink }) {
   return (
     <Card border="secondary" style={{ width: '18rem' }}>
-    <Card.Header>Object Oriented Programming</Card.Header>
-    <Card.Body>
-      <Card.Title>Encapsulation</Card.Title>
-      <Card.Text>
-      The bundling of data with the mechanisms or methods that operate on the data. It may also refer to the limiting of direct access to some of that data, such as an object's components. Essentially, encapsulation prevents external code from being concerned with the internal workings of an object.
-      </Card.Text>
-    </Card.Body>
-    <Card.Footer><i><a href='https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)#An_information-hiding_mechanism target="_blank'>Learn More</a></i></Card.Footer>
-  </Card>
+      <Card.Header>{postHeader}</Card.Header>
+      <Card.Body>
+        <Card.Title>{postTitle}</Card.Title>
+        <Card.Text>{postBody}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
+        <i>
+          <a href={postLink} target="_blank" rel="noreferrer">
+            Learn More
+          </a>
+        </i>
+      </Card.Footer>
+    </Card>
   );
 }
 
 function App() {
+  const [header, setHeader] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [footer, setFooter] = useState("");
+  const [postList, setPostList] = useState([]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newPost = {
+      topic: header,
+      title: title,
+      body: body,
+      link: footer
+    };
+    setPostList([...postList, newPost]);
+    // Clear input fields after submission
+    setHeader("");
+    setTitle("");
+    setBody("");
+    setFooter("");
+  };
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -26,7 +54,58 @@ function App() {
       </header>
       <p> The posts will eventually ramps up, I started this project on 5/14 so I have a few years of information to catch up on. </p>
 
-      <Post></Post>
+      {postList.map((post, index) => (
+        <Post
+          key={index}
+          postHeader={post.topic}
+          postTitle={post.title}
+          postBody={post.body}
+          postLink={post.link}
+        />
+      ))}
+
+      <Card border="secondary" style={{ width: '18rem' }}>
+        <form onSubmit={handleSubmit}>
+          <Card.Header>
+            Topic:
+            <input
+              type="text"
+              value={header}
+              onChange={(e) => setHeader(e.target.value)}
+              placeholder="Topic"
+              className="border"
+            />
+          </Card.Header>
+          <Card.Body>
+            Term:
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              className="border"
+            />
+            Description:
+            <textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Description"
+              className="border"
+            />
+          </Card.Body>
+          <Card.Footer>
+            Link/Reference:
+            <input
+              type="text"
+              value={footer}
+              onChange={(e) => setFooter(e.target.value)}
+              placeholder="Link or Reference to more information"
+              className="border"
+            />
+          </Card.Footer>
+          <button type="submit">Submit</button>
+        </form>
+      </Card>
     </div>
   );
 }
