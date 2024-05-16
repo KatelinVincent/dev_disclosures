@@ -4,20 +4,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
 import React, { useState } from 'react';
 
-function Post({ postHeader, postTitle, postBody, postLink }) {
+
+function Post({ id, postHeader, postTitle, postBody, postLink, onDelete }) {
   return (
-    <Card border="secondary" style={{ width: '18rem' }}>
+    <Card border="secondary" style={{ marginBottom: '1rem' }}>
       <Card.Header>{postHeader}</Card.Header>
       <Card.Body>
         <Card.Title>{postTitle}</Card.Title>
         <Card.Text>{postBody}</Card.Text>
       </Card.Body>
       <Card.Footer>
-        <i>
+        <i class="float-left">
           <a href={postLink} target="_blank" rel="noreferrer">
             Learn More
           </a>
         </i>
+        <button onClick={() => onDelete(id)} class="float-right bg-red-600 text-white p-1 rounded">Delete</button>
       </Card.Footer>
     </Card>
   );
@@ -33,6 +35,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newPost = {
+      id: Date.now(), // Generate a unique ID for each post
       topic: header,
       title: title,
       body: body,
@@ -46,6 +49,9 @@ function App() {
     setFooter("");
   };
 
+  const handleDelete = (postId) => {
+    setPostList(postList.filter(post => post.id !== postId));
+  };
 
   return (
     <div className="App">
@@ -54,58 +60,63 @@ function App() {
       </header>
       <p> The posts will eventually ramps up, I started this project on 5/14 so I have a few years of information to catch up on. </p>
 
-      {postList.map((post, index) => (
-        <Post
-          key={index}
-          postHeader={post.topic}
-          postTitle={post.title}
-          postBody={post.body}
-          postLink={post.link}
-        />
-      ))}
-
-      <Card border="secondary" style={{ width: '18rem' }}>
-        <form onSubmit={handleSubmit}>
-          <Card.Header>
-            Topic:
-            <input
-              type="text"
-              value={header}
-              onChange={(e) => setHeader(e.target.value)}
-              placeholder="Topic"
-              className="border"
-            />
-          </Card.Header>
-          <Card.Body>
-            Term:
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Title"
-              className="border"
-            />
-            Description:
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Description"
-              className="border"
-            />
-          </Card.Body>
-          <Card.Footer>
-            Link/Reference:
-            <input
-              type="text"
-              value={footer}
-              onChange={(e) => setFooter(e.target.value)}
-              placeholder="Link or Reference to more information"
-              className="border"
-            />
-          </Card.Footer>
-          <button type="submit">Submit</button>
-        </form>
-      </Card>
+      <div class="flex grid grid-cols-8 gap-1">
+        {postList.map((post) => (
+          <Post
+            key={post.id}
+            id={post.id}
+            postHeader={post.topic}
+            postTitle={post.title}
+            postBody={post.body}
+            postLink={post.link}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+      <div className="center">
+        <Card border="secondary" style={{ width: '18rem' }}>
+          <form onSubmit={handleSubmit}>
+            <Card.Header>
+              Topic:
+              <input
+                type="text"
+                value={header}
+                onChange={(e) => setHeader(e.target.value)}
+                placeholder="Topic"
+                className="border"
+              />
+            </Card.Header>
+            <Card.Body>
+              Term:
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+                className="border"
+              />
+              Description:
+              <textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="Description"
+                className="border"
+              />
+            </Card.Body>
+            <Card.Footer>
+              Link/Reference:
+              <input
+                type="text"
+                value={footer}
+                onChange={(e) => setFooter(e.target.value)}
+                placeholder="Link or Reference to more information"
+                className="border"
+              />
+            </Card.Footer>
+            <button type="submit">Submit</button>
+          </form>
+        </Card>
+      </div>
     </div>
   );
 }
