@@ -113,7 +113,7 @@ function App() {
                 className="border"
               />
             </Card.Footer>
-            <button type="submit">Submit</button>
+            <button class="bg-blue-500 text-white p-1 rounded" type="submit">Submit</button>
           </form>
         </Card>
       </div>
