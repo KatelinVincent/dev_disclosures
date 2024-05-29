@@ -5,13 +5,21 @@ import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 
-
-function Post({ id, header, title, body, link, onDelete }) {
+function Post({ id, header, title, body, link, category, onDelete }) {
   return (
     <Card border="secondary" style={{ marginBottom: '1rem' }}>
-      <Card.Header>{header}</Card.Header>
+      <Card.Header className="d-flex justify-content-between ">
+        <div>
+        {header}
+          </div>
+        <div>
+        <i className='text-slate-400'>{category}</i>
+          </div>
+          </Card.Header>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>{body}</Card.Text>
@@ -26,10 +34,16 @@ function Post({ id, header, title, body, link, onDelete }) {
 
 function App() {
 
+  const categories = ['Programming Languages', 'Frameworks and Libraries', 'Version Control', 'Development Tools',
+    'Web Development', 'Mobile Development', 'Database Management', 'Testing', 'Software Design Patterns',
+    'Agile Development', 'DevOps', 'Security', 'Performance Optimization', 'Career Development', 'General Tips and Tricks', 'Other']
+
   const [header, setHeader] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [footer, setFooter] = useState("");
+  const [category, setCategory] = useState("");
+
   const [postList, setPostList] = useState([]);
 
 
@@ -43,7 +57,8 @@ function App() {
       topic: header,
       title: title,
       body: body,
-      link: footer
+      link: footer,
+      group: category
     };
 
     setPostList([...postList, newPost]);
@@ -51,12 +66,16 @@ function App() {
     setTitle("");
     setBody("");
     setFooter("");
+    setCategory("");
   };
 
   const handleDelete = (postId) => {
     setPostList(postList.filter(post => post.id !== postId));
   };
 
+  const groupSelect = (eventKey) => {
+    setCategory(eventKey);
+  }
 
 
   return (
@@ -65,56 +84,10 @@ function App() {
         <p> Welcome to DevDiscolsures... a place for disclosure of knowledge, tips, and lessons learned throughout one's career. As a developer in the begining of my career, I will use this as a platform to document and practice everything I learn on my jounrney. </p>
       </header>
 
-
-
-      {/* <div className="center">
-          <Card border="secondary" style={{ width: '18rem' }}>
-            <form onSubmit={handleSubmit}>
-              <Card.Header >
-                Topic:
-                <input
-                  type="text"
-                  value={header}
-                  onChange={(e) => setHeader(e.target.value)}
-                  placeholder="foo"
-                  className="border"
-                />
-              </Card.Header>
-              <Card.Body class='grid grid-rows-3'>
-                Term:
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="bar"
-                  className="border"
-                />
-                Description:
-                <textarea
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  placeholder="foo-bar is nonsense."
-                  className="border"
-                />
-              </Card.Body>
-              <Card.Footer class='grid grid-rows-2'>
-                Link/Reference: 
-                <input
-                  type="text"
-                  value={footer}
-                  onChange={(e) => setFooter(e.target.value)}
-                  placeholder="www.foo-bar.com"
-                  className="border"
-                />
-              </Card.Footer>
-              <button class="bg-blue-500 text-white p-1 rounded" type="submit">Submit</button>
-            </form>
-          </Card>
-        </div> */}
-      <div class="explore border rounded my-2">
-      <h4 class='pt-2'><i>New Submission</i></h4>
-        <form onSubmit={handleSubmit} class='pb-5 pt-2 m-2'>
-          <div class='grid grid-cols-4 text-lg gap-4'>
+      <div className="explore border rounded my-2">
+        <h4 className='pt-2'><i>New Submission</i></h4>
+        <form onSubmit={handleSubmit} className='pb-5 pt-2 m-2'>
+          <div className='grid grid-cols-4 text-lg gap-3'>
 
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">
@@ -125,7 +98,7 @@ function App() {
                 aria-describedby="inputGroup-sizing-default"
                 type="text"
                 value={header}
-                onChange={(e) => setHeader(e.target.value)}
+                onChange={(input) => setHeader(input.target.value)}
                 placeholder="foo"
                 className="border"
               />
@@ -140,7 +113,7 @@ function App() {
                 aria-describedby="inputGroup-sizing-default"
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(input) => setTitle(input.target.value)}
                 placeholder="bar"
                 className="border"
               />
@@ -148,13 +121,14 @@ function App() {
 
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">
-              Description:
+                Description:
               </InputGroup.Text>
               <Form.Control
-                aria-label="Default"
+                as="textarea"
+                aria-label="With textarea"
                 aria-describedby="inputGroup-sizing-default"
                 value={body}
-                onChange={(e) => setBody(e.target.value)}
+                onChange={(input) => setBody(input.target.value)}
                 placeholder="foo-bar is nonsense."
                 className="border"
               />
@@ -163,26 +137,48 @@ function App() {
 
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">
-              Link/Reference:
+                Link/Reference:
               </InputGroup.Text>
               <Form.Control
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
                 type="text"
                 value={footer}
-                onChange={(e) => setFooter(e.target.value)}
+                onChange={(input) => setFooter(input.target.value)}
                 placeholder="www.foo-bar.com"
                 className="border"
               />
             </InputGroup>
           </div>
-          <Button variant="primary" size="lg" active type="submit">Submit</Button>
-          {/* <button class="bg-blue-500 text-white p-1 rounded" type="submit">Submit</button> */}
+          <div className='grid grid-cols-2 gap-5'>
+            <div className="justify-self-end">
+              <InputGroup >
+                <DropdownButton
+                  variant="secondary"
+                  title={category || "Category"}
+                  id="input-group-dropdown-2"
+                  align="end"
+                  onSelect={groupSelect}
+                  size="lg"
+
+                >
+                  {
+                    categories.map(option => (
+                      <Dropdown.Item key={option} eventKey={option}>{option}</Dropdown.Item>
+                    ))
+                  }
+                </DropdownButton>
+              </InputGroup>
+            </div>
+            <div className="justify-self-start">
+              <Button variant="primary" size="lg" active type="submit" >Submit</Button>
+            </div>
+          </div>
         </form>
 
 
         <h2><i>Explore</i></h2>
-        <div class="flex grid grid-cols-8 gap-1">
+        <div className="flex grid grid-cols-8 gap-1">
           {postList.map((post) => (
             <Post
               key={post.id}
@@ -191,6 +187,7 @@ function App() {
               title={post.title}
               body={post.body}
               link={post.link}
+              category={post.group}
               onDelete={handleDelete}
             />
           ))}
