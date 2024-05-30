@@ -14,12 +14,12 @@ function Post({ id, header, title, body, link, category, onDelete }) {
     <Card border="secondary" style={{ marginBottom: '1rem' }}>
       <Card.Header className="d-flex justify-content-between ">
         <div>
-        {header}
-          </div>
+          {header}
+        </div>
         <div>
-        <i className='text-slate-400'>{category}</i>
-          </div>
-          </Card.Header>
+          <i className='text-slate-400'>{category}</i>
+        </div>
+      </Card.Header>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>{body}</Card.Text>
@@ -87,68 +87,70 @@ function App() {
       <div className="explore border rounded my-2">
         <h4 className='pt-2'><i>New Submission</i></h4>
         <form onSubmit={handleSubmit} className='pb-5 pt-2 m-2'>
-          <div className='grid grid-cols-4 text-lg gap-3'>
+          <div className="table-responsive">
+            <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
+              {/* div className='grid grid-flow-col text-lg gap-3 ui-grid-auto-resize' */}
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Topic:
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Default"
+                  aria-describedby="inputGroup-sizing-default"
+                  type="text"
+                  value={header}
+                  onChange={(input) => setHeader(input.target.value)}
+                  placeholder="foo"
+                  className="border"
+                />
+              </InputGroup>
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Topic:
-              </InputGroup.Text>
-              <Form.Control
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-                type="text"
-                value={header}
-                onChange={(input) => setHeader(input.target.value)}
-                placeholder="foo"
-                className="border"
-              />
-            </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Term:
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Default"
+                  aria-describedby="inputGroup-sizing-default"
+                  type="text"
+                  value={title}
+                  onChange={(input) => setTitle(input.target.value)}
+                  placeholder="bar"
+                  className="border"
+                />
+              </InputGroup>
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Term:
-              </InputGroup.Text>
-              <Form.Control
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-                type="text"
-                value={title}
-                onChange={(input) => setTitle(input.target.value)}
-                placeholder="bar"
-                className="border"
-              />
-            </InputGroup>
-
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Description:
-              </InputGroup.Text>
-              <Form.Control
-                as="textarea"
-                aria-label="With textarea"
-                aria-describedby="inputGroup-sizing-default"
-                value={body}
-                onChange={(input) => setBody(input.target.value)}
-                placeholder="foo-bar is nonsense."
-                className="border"
-              />
-            </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Description:
+                </InputGroup.Text>
+                <Form.Control
+                  as="textarea"
+                  aria-label="With textarea"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={body}
+                  onChange={(input) => setBody(input.target.value)}
+                  placeholder="foo-bar is nonsense."
+                  className="border"
+                />
+              </InputGroup>
 
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Link/Reference:
-              </InputGroup.Text>
-              <Form.Control
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-                type="text"
-                value={footer}
-                onChange={(input) => setFooter(input.target.value)}
-                placeholder="www.foo-bar.com"
-                className="border"
-              />
-            </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Link/Reference:
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Default"
+                  aria-describedby="inputGroup-sizing-default"
+                  type="text"
+                  value={footer}
+                  onChange={(input) => setFooter(input.target.value)}
+                  placeholder="www.foo-bar.com"
+                  className="border"
+                />
+              </InputGroup>
+            </table>
           </div>
           <div className='grid grid-cols-2 gap-5'>
             <div className="justify-self-end">
@@ -178,19 +180,21 @@ function App() {
 
 
         <h2><i>Explore</i></h2>
-        <div className="flex grid grid-cols-8 gap-1">
-          {postList.map((post) => (
-            <Post
-              key={post.id}
-              id={post.id}
-              header={post.topic}
-              title={post.title}
-              body={post.body}
-              link={post.link}
-              category={post.group}
-              onDelete={handleDelete}
-            />
-          ))}
+        <div className="table-responsive">
+          <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
+            {postList.map((post) => (
+              <Post
+                key={post.id}
+                id={post.id}
+                header={post.topic}
+                title={post.title}
+                body={post.body}
+                link={post.link}
+                category={post.group}
+                onDelete={handleDelete}
+              />
+            ))}
+          </table>
         </div>
       </div>
       <p> The posts will eventually ramp up, I started this project on 5/14 so I have a few years of information to catch up on. </p>
