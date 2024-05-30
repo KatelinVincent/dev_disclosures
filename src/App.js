@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -44,13 +44,17 @@ function App() {
     'Web Development', 'Mobile Development', 'Database Management', 'Testing', 'Software Design Patterns',
     'Agile Development', 'DevOps', 'Security', 'Performance Optimization', 'Career Development', 'General Tips and Tricks', 'Other']
 
+
   const [header, setHeader] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [footer, setFooter] = useState("");
   const [category, setCategory] = useState("");
 
-  const [postList, setPostList] = useState([]);
+  const [postList, setPostList] = useState(() => {
+    const storedPosts = JSON.parse(localStorage.getItem('posts'));
+    return storedPosts || [];
+  });
   const [categoryError, setCategoryError] = useState("");
 
 
@@ -58,7 +62,7 @@ function App() {
 
     event.preventDefault();
 
-    if (category !== ""){
+    if (category !== "") {
       const newPost = {
         id: Date.now(),
         topic: header,
@@ -67,8 +71,12 @@ function App() {
         link: footer,
         group: category
       };
-  
+
+
+      const updatedPostList = [...postList, newPost];
       setPostList([...postList, newPost]);
+      localStorage.setItem('posts', JSON.stringify(updatedPostList));
+
       setHeader("");
       setTitle("");
       setBody("");
@@ -77,10 +85,13 @@ function App() {
       setCategoryError("");
     }
     else {
-        categoryRequired()
+      categoryRequired()
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('posts', JSON.stringify(postList));
+  }, [postList]);
 
   const handleHyperLink = (link) => {
     let LearnHyperLink;
@@ -89,7 +100,6 @@ function App() {
     }
     return LearnHyperLink;
   };
-  let categoryErrMessage;
   const categoryRequired = () => {
     setCategoryError("Please Enter a Category.");
   };
@@ -112,72 +122,85 @@ function App() {
       <div className="explore border rounded my-2">
         <h4 className='pt-2'><i>New Submission</i></h4>
         <form onSubmit={handleSubmit} className='pb-5 pt-2 m-2'>
-          <div className="table-responsive">
-            <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-default">
-                  Topic:
-                </InputGroup.Text>
-                <Form.Control
-                  required
-                  aria-label="Default"
-                  aria-describedby="inputGroup-sizing-default"
-                  type="text"
-                  value={header}
-                  onChange={(input) => setHeader(input.target.value)}
-                  placeholder="foo"
-                  className="border"
-                />
-              </InputGroup>
-
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-default">
-                  Term:
-                </InputGroup.Text>
-                <Form.Control
-                  required
-                  aria-label="Default"
-                  aria-describedby="inputGroup-sizing-default"
-                  type="text"
-                  value={title}
-                  onChange={(input) => setTitle(input.target.value)}
-                  placeholder="bar"
-                  className="border"
-                />
-              </InputGroup>
-
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-default">
-                  Description:
-                </InputGroup.Text>
-                <Form.Control
-                  required
-                  as="textarea"
-                  aria-label="With textarea"
-                  aria-describedby="inputGroup-sizing-default"
-                  value={body}
-                  onChange={(input) => setBody(input.target.value)}
-                  placeholder="foo-bar is nonsense."
-                  className="border"
-                />
-              </InputGroup>
+          <div >
+            <table className="table-responsive w-full">
+              <tbody><tr className=' grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
+                <td>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="inputGroup-sizing-default">
+                      Topic:
+                    </InputGroup.Text>
+                    <Form.Control
+                      required
+                      aria-label="Default"
+                      aria-describedby="inputGroup-sizing-default"
+                      type="text"
+                      value={header}
+                      onChange={(input) => setHeader(input.target.value)}
+                      placeholder="foo"
+                      className="border"
+                    />
+                  </InputGroup>
+                </td>
+                <td>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="inputGroup-sizing-default">
+                      Term:
+                    </InputGroup.Text>
+                    <Form.Control
+                      required
+                      aria-label="Default"
+                      aria-describedby="inputGroup-sizing-default"
+                      type="text"
+                      value={title}
+                      onChange={(input) => setTitle(input.target.value)}
+                      placeholder="bar"
+                      className="border"
+                    />
+                  </InputGroup>
+                </td>
 
 
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-default">
-                  Link/Reference:
-                </InputGroup.Text>
-                <Form.Control
-                  type="url"
-                  aria-label="Default"
-                  aria-describedby="inputGroup-sizing-default"
-                  value={footer}
-                  onChange={(input) => setFooter(input.target.value)}
-                  placeholder="www.foo-bar.com"
-                  className="border"
+                <td>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="inputGroup-sizing-default">
+                      Description:
+                    </InputGroup.Text>
+                    <Form.Control
+                      required
+                      as="textarea"
+                      aria-label="With textarea"
+                      aria-describedby="inputGroup-sizing-default"
+                      value={body}
+                      onChange={(input) => setBody(input.target.value)}
+                      placeholder="foo-bar is nonsense."
+                      className="border"
+                    />
+                  </InputGroup>
+                </td>
 
-                />
-              </InputGroup>
+                <td>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="inputGroup-sizing-default">
+                      Link/Reference:
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="url"
+                      aria-label="Default"
+                      aria-describedby="inputGroup-sizing-default"
+                      value={footer}
+                      onChange={(input) => setFooter(input.target.value)}
+                      placeholder="www.foo-bar.com"
+                      className="border"
+
+                    />
+                  </InputGroup>
+                </td>
+
+              </tr>
+
+              </tbody>
+
             </table>
           </div>
           <div className='grid grid-cols-2 gap-5'>
@@ -206,27 +229,29 @@ function App() {
             </div>
           </div>
           <div>
-          {categoryError && <i><p className="text-red-600 text-lg font-semibold">{categoryError}</p></i>}
-        </div>
+            {categoryError && <i><p className="text-red-600 text-lg font-semibold">{categoryError}</p></i>}
+          </div>
         </form>
 
 
         <h2><i>Explore</i></h2>
         <div className="table-responsive">
           <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
-            {postList.map((post) => (
-              <Post
-                key={post.id}
-                id={post.id}
-                header={post.topic}
-                title={post.title}
-                body={post.body}
-                link={post.link}
-                category={post.group}
-                onDelete={handleDelete}
-                conditionalLink={handleHyperLink}
-              />
-            ))}
+            <tbody>
+              {postList.map((post) => (
+                <Post
+                  key={post.id}
+                  id={post.id}
+                  header={post.topic}
+                  title={post.title}
+                  body={post.body}
+                  link={post.link}
+                  category={post.group}
+                  onDelete={handleDelete}
+                  conditionalLink={handleHyperLink}
+                />
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
