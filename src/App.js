@@ -9,7 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 
-function Post({ id, header, title, body, link, category, onDelete }) {
+function Post({ id, header, title, body, link, category, onDelete, conditionalLink }) {
   return (
     <Card border="secondary" style={{ marginBottom: '1rem' }}>
       <Card.Header className="d-flex justify-content-between ">
@@ -25,8 +25,14 @@ function Post({ id, header, title, body, link, category, onDelete }) {
         <Card.Text>{body}</Card.Text>
       </Card.Body>
       <Card.Footer>
-        <i class="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>
-        <button onClick={() => onDelete(id)} class="float-right bg-red-600 text-white p-1 rounded">Delete</button>
+      
+    <div>
+      {conditionalLink(link)}
+    </div>
+
+        <div class="float-right">
+        <button onClick={() => onDelete(id)} class="bg-red-600 text-white p-1 rounded">Delete</button>
+        </div>
       </Card.Footer>
     </Card>
   );
@@ -69,6 +75,15 @@ function App() {
     setCategory("");
   };
 
+
+const handleHyperLink = (link) => {
+  let LearnHyperLink;
+  if (link !== ""){
+    LearnHyperLink = <i className="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>
+}
+return LearnHyperLink;
+};
+
   const handleDelete = (postId) => {
     setPostList(postList.filter(post => post.id !== postId));
   };
@@ -89,7 +104,6 @@ function App() {
         <form onSubmit={handleSubmit} className='pb-5 pt-2 m-2'>
           <div className="table-responsive">
             <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
-              {/* div className='grid grid-flow-col text-lg gap-3 ui-grid-auto-resize' */}
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
                   Topic:
@@ -197,6 +211,7 @@ function App() {
                 link={post.link}
                 category={post.group}
                 onDelete={handleDelete}
+                conditionalLink={handleHyperLink}
               />
             ))}
           </table>
