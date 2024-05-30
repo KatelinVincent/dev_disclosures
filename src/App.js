@@ -123,8 +123,8 @@ function App() {
         <h4 className='pt-2'><i>New Submission</i></h4>
         <form onSubmit={handleSubmit} className='pb-5 pt-2 m-2'>
           <div >
-            <table className="table-responsive w-full">
-              <tbody><tr className=' grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
+            <table className="table-responsive w-full text-lg ">
+              <tbody><tr className=' grid grid-cols-1 md:grid-cols-4 gap-3'>
                 <td>
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="inputGroup-sizing-default">

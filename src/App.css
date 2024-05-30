@@ -24,3 +24,10 @@
   align-items: center;
   justify-content: center;
 }
+
+input[type="text"] {
+  height: 60px;
+}
+input[type="url"] {
+  height: 60px;
+}
