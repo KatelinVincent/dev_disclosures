@@ -25,13 +25,13 @@ function Post({ id, header, title, body, link, category, onDelete, conditionalLi
         <Card.Text>{body}</Card.Text>
       </Card.Body>
       <Card.Footer>
-      
-    <div>
-      {conditionalLink(link)}
-    </div>
+
+        <div>
+          {conditionalLink(link)}
+        </div>
 
         <div class="float-right">
-        <button onClick={() => onDelete(id)} class="bg-red-600 text-white p-1 rounded">Delete</button>
+          <button onClick={() => onDelete(id)} class="bg-red-600 text-white p-1 rounded">Delete</button>
         </div>
       </Card.Footer>
     </Card>
@@ -51,38 +51,48 @@ function App() {
   const [category, setCategory] = useState("");
 
   const [postList, setPostList] = useState([]);
-
+  const [categoryError, setCategoryError] = useState("");
 
 
   const handleSubmit = (event) => {
 
     event.preventDefault();
 
-    const newPost = {
-      id: Date.now(),
-      topic: header,
-      title: title,
-      body: body,
-      link: footer,
-      group: category
-    };
-
-    setPostList([...postList, newPost]);
-    setHeader("");
-    setTitle("");
-    setBody("");
-    setFooter("");
-    setCategory("");
+    if (category !== ""){
+      const newPost = {
+        id: Date.now(),
+        topic: header,
+        title: title,
+        body: body,
+        link: footer,
+        group: category
+      };
+  
+      setPostList([...postList, newPost]);
+      setHeader("");
+      setTitle("");
+      setBody("");
+      setFooter("");
+      setCategory("");
+      setCategoryError("");
+    }
+    else {
+        categoryRequired()
+    }
   };
 
 
-const handleHyperLink = (link) => {
-  let LearnHyperLink;
-  if (link !== ""){
-    LearnHyperLink = <i className="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>
-}
-return LearnHyperLink;
-};
+  const handleHyperLink = (link) => {
+    let LearnHyperLink;
+    if (link !== "") {
+      LearnHyperLink = <i className="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>
+    }
+    return LearnHyperLink;
+  };
+  let categoryErrMessage;
+  const categoryRequired = () => {
+    setCategoryError("Please Enter a Category.");
+  };
 
   const handleDelete = (postId) => {
     setPostList(postList.filter(post => post.id !== postId));
@@ -195,6 +205,9 @@ return LearnHyperLink;
               <Button variant="primary" size="lg" active type="submit" >Submit</Button>
             </div>
           </div>
+          <div>
+          {categoryError && <i><p className="text-red-600 text-lg font-semibold">{categoryError}</p></i>}
+        </div>
         </form>
 
 
