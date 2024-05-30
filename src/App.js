@@ -95,6 +95,7 @@ function App() {
                   Topic:
                 </InputGroup.Text>
                 <Form.Control
+                  required
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
                   type="text"
@@ -110,6 +111,7 @@ function App() {
                   Term:
                 </InputGroup.Text>
                 <Form.Control
+                  required
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
                   type="text"
@@ -125,6 +127,7 @@ function App() {
                   Description:
                 </InputGroup.Text>
                 <Form.Control
+                  required
                   as="textarea"
                   aria-label="With textarea"
                   aria-describedby="inputGroup-sizing-default"
@@ -141,13 +144,14 @@ function App() {
                   Link/Reference:
                 </InputGroup.Text>
                 <Form.Control
+                  type="url"
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
-                  type="text"
                   value={footer}
                   onChange={(input) => setFooter(input.target.value)}
                   placeholder="www.foo-bar.com"
                   className="border"
+
                 />
               </InputGroup>
             </table>
@@ -156,6 +160,7 @@ function App() {
             <div className="justify-self-end">
               <InputGroup >
                 <DropdownButton
+                  required
                   variant="secondary"
                   title={category || "Category"}
                   id="input-group-dropdown-2"
