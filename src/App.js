@@ -236,21 +236,24 @@ function App() {
 
         <h2><i>Explore</i></h2>
         <div className="table-responsive">
-          <table className='w-full grid grid-cols-1 md:grid-cols-4 text-lg gap-3'>
-            <tbody>
-              {postList.map((post) => (
-                <Post
-                  key={post.id}
-                  id={post.id}
-                  header={post.topic}
-                  title={post.title}
-                  body={post.body}
-                  link={post.link}
-                  category={post.group}
-                  onDelete={handleDelete}
-                  conditionalLink={handleHyperLink}
-                />
-              ))}
+          <table className="table-responsive w-full text-lg ">
+            <tbody><tr className=' grid grid-cols-1 md:grid-cols-4 gap-3'>
+              
+                {postList.map((post) => (
+                  <td><Post
+                    key={post.id}
+                    id={post.id}
+                    header={post.topic}
+                    title={post.title}
+                    body={post.body}
+                    link={post.link}
+                    category={post.group}
+                    onDelete={handleDelete}
+                    conditionalLink={handleHyperLink}
+                  /></td>
+                ))}
+              
+            </tr>
             </tbody>
           </table>
         </div>
