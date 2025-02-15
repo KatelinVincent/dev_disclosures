@@ -50,16 +50,19 @@ function App() {
   const [body, setBody] = useState("");
   const [footer, setFooter] = useState("");
   const [category, setCategory] = useState("");
-
-  const [postList, setPostList] = useState(() => {
+  const [link, setLink] = useState("");
+  const [postList, setPostList] = useState([]);
+  
+  useEffect(() => {
     const storedPosts = JSON.parse(localStorage.getItem('posts'));
-    return storedPosts || [];
-  });
+    if (storedPosts) {
+      setPostList(storedPosts);
+    }
+  }, []);
   const [categoryError, setCategoryError] = useState("");
 
 
   const handleSubmit = (event) => {
-
     event.preventDefault();
 
     if (category !== "") {
@@ -68,24 +71,22 @@ function App() {
         topic: header,
         title: title,
         body: body,
-        link: footer,
+        link: link,
         group: category
       };
 
-
       const updatedPostList = [...postList, newPost];
-      setPostList([...postList, newPost]);
+      setPostList(updatedPostList);
       localStorage.setItem('posts', JSON.stringify(updatedPostList));
 
       setHeader("");
       setTitle("");
       setBody("");
-      setFooter("");
+      setLink("");
       setCategory("");
       setCategoryError("");
-    }
-    else {
-      categoryRequired()
+    } else {
+      categoryRequired();
     }
   };
 
@@ -94,13 +95,12 @@ function App() {
   }, [postList]);
 
   const handleHyperLink = (link) => {
-    let LearnHyperLink;
     if (link !== "") {
-      LearnHyperLink = <i className="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>
+      return <i className="float-left"><a href={link} target="_blank" rel="noreferrer">Learn More</a></i>;
     }
-    return LearnHyperLink;
+    return null;
   };
-  const categoryRequired = () => {
+  const showCategoryError = () => {
     setCategoryError("Please Enter a Category.");
   };
 
@@ -116,7 +116,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p> Welcome to DevDiscolsures... a place for disclosure of knowledge, tips, and lessons learned throughout one's career. As a developer in the begining of my career, I will use this as a platform to document and practice everything I learn on my jounrney. </p>
+        <p> Welcome to DevDiscolsures... a place for disclosure of knowledge, tips, and lessons learned throughout one's career. As a developer in the begining of my career, I will use this as a platform to document and practice everything I learn on my journey. </p>
       </header>
 
       <div className="explore border rounded my-2">
